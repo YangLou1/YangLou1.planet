@@ -17,7 +17,7 @@ RUN $(npm bin)/ng build --prod
 
 
 ### STAGE 2: Setup ###
-FROM tobi312/rpi-nginx:alpine
+FROM arm32v7/nginx:1.13.8
 ## Copy our default nginx config
 COPY docker/planet/default.conf /etc/nginx/conf.d/
 ## Remove default nginx website
