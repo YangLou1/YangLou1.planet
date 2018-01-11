@@ -4,7 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { CouchService } from '../shared/couchdb.service';
 import { MatRadioModule , MatFormFieldModule, MatButtonModule, } from '@angular/material';
-import { FormBuilder, FormControl, FormGroup, Validators, FormControlName } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormArray,
+  Validators
+} from '@angular/forms';
 
 export class Message {
   message: string;
