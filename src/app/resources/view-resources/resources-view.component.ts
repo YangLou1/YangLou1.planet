@@ -11,13 +11,7 @@ import { Subject } from 'rxjs/Subject';
 
 @Component({
   templateUrl: './resources-view.component.html',
-  styles: [ `
-    :host iframe {
-      width: 80vw;
-      height: 80vh;
-      border: none;
-    }
-  ` ]
+  styleUrls: [ './resources-view.scss' ]
 })
 export class ResourcesViewComponent implements OnInit, OnDestroy {
 
