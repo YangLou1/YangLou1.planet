@@ -4,6 +4,7 @@ import { UserService } from '../shared/user.service';
 import { CouchService } from '../shared/couchdb.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { Location } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -40,6 +41,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   roleList: string[] = [ 'intern', 'learner', 'teacher' ];
   selectedRole = '';
   selection = new SelectionModel(true, []);
+  private dbName = '_users';
+  urlPrefix = environment.couchAddress + this.dbName + '/';
 
   constructor(
     private userService: UserService,
@@ -66,7 +69,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     }
   }
 
-  searchFilter(filterValue: string) {
+  applyFilter(filterValue: string) {
     this.allUsers.filter = filterValue.trim().toLowerCase();
   }
 
@@ -112,7 +115,13 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.allUsers.data = [].concat(
         data[0].rows.reduce((users: any[], user: any) => {
           if (user.id !== '_design/_auth') {
-            users.push({ ...user.doc, admin: false });
+            let filename: string = '';
+            let imageSrc: string = '';
+            if (user.doc._attachments) {
+              filename = Object.keys(user.doc._attachments)[0];
+              imageSrc = this.urlPrefix + 'org.couchdb.user:' + user.doc.name + '/' + filename;
+            }
+            users.push({ ...user.doc, admin: false, imageSrc: imageSrc });
           }
           return users;
         }, []),

@@ -3,7 +3,7 @@
   <span class="toolbar-fill"></span>
   <mat-icon>search</mat-icon>
   <mat-form-field class="font-size-1">
-    <input matInput (keyup)="applyResFilter($event.target.value)" i18n-placeholder placeholder="Type text to search...">
+    <input matInput (keyup)="applyFilter($event.target.value)" i18n-placeholder placeholder="Type text to search...">
   </mat-form-field>
 </mat-toolbar>
 
@@ -22,14 +22,15 @@
         <button mat-button class="margin-lr-3" type="submit"><mat-icon>library_add</mat-icon><span i18n>Add Roles</span></button>
       </form>
     </div>
-    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" class="primary-color"></mat-paginator>
+    
   </mat-toolbar>
+
   <mat-table #table [dataSource]="allUsers" matSort>
     <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef>
         <mat-checkbox (change)="$event ? masterToggle() : null"
         [checked]="selection.hasValue() && isAllSelected()"
-        [indeterminate]="selection.hasValue() && !isAllSelected()" i18n>
+        [indeterminate]="selection.hasValue() && !isAllSelected()">
       </mat-checkbox>
       </mat-header-cell>
       <mat-cell *matCellDef="let row">
@@ -41,7 +42,14 @@
     </ng-container>
     <ng-container matColumnDef="profile">
       <mat-header-cell *matHeaderCellDef i18n>Profile Image</mat-header-cell>
-      <mat-cell *matCellDef="let element" (click)="select(element)">{{element._attachments}}</mat-cell>
+      <mat-cell *matCellDef="let element" (click)="select(element)">
+        <div *ngIf="element.imageSrc; else noImage">
+          <img height="50px" [src]="element.imageSrc">
+        </div>
+        <ng-template #noImage>
+          <img src="/assets/avatar.png" height="50px">
+        </ng-template>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header i18n>User Name</mat-header-cell>
@@ -63,15 +71,18 @@
       <mat-header-cell *matHeaderCellDef i18n>Action</mat-header-cell>
       <mat-cell  *matCellDef="let element">
         <div *ngIf="!element.admin">
-          <mat-icon  *ngIf="element.roles.length === 0" (click)="addRole(element)">lock</mat-icon>
-          <mat-icon *ngIf="element.roles.length > 0" (click)="removeRole(element)">lock_open</mat-icon>
-          <a routerLink="/users/profile/{{element.name}}" mat-button i18n>View Profile
+          <button mat-icon-button *ngIf="element.roles.length === 0" (click)="addRole(element)" mat-raised-button>
+          <mat-icon>lock</mat-icon></button>
+          <button mat-icon-button *ngIf="element.roles.length > 0" (click)="removeRole(element)" mat-raised-button>
+          <mat-icon >lock_open</mat-icon></button>
+          <a routerLink="/users/profile/{{element.name}}" mat-raised-button i18n>View Profile
             <mat-icon>folder_open</mat-icon></a>
         </div>
       </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{highlight:row.selected}" ></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)" [ngClass]="{highlight:row.selected}" ></mat-row>
   </mat-table>
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
 <div class="km-message">{{message}}</div>
