@@ -9,7 +9,7 @@
     <img *ngIf="current_flag" src="assets/flags/{{current_flag}}.png" alt="{{current_lang}}"
       title="{{current_lang}}" />
   </button>
-  <button mat-icon-button *ngIf="roles.indexOf('_admin') === -1" routerLink="/users/profile/{{name}}"><mat-icon>person</mat-icon></button>
+  <button mat-icon-button *ngIf="roles.indexOf('_admin') === -1" routerLink="/users/profile/{{name}}"><mat-icon>account_circle</mat-icon></button>
 </mat-toolbar>
 
 <!--Languages dropdown menu-->
@@ -39,8 +39,9 @@
       </li>
       <li>
         <a mat-button routerLink="/resources" i18n-title title="Resources">
-          <mat-icon>account_balance</mat-icon>
-          <label i18n>Library</label>
+         
+         <mat-icon>account_balance</mat-icon> 
+         <label i18n>Library</label>
         </a>
       </li>
       <li>
