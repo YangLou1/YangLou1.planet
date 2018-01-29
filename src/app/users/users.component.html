@@ -22,7 +22,7 @@
         <button mat-button class="margin-lr-3" type="submit"><mat-icon>library_add</mat-icon><span i18n>Add Roles</span></button>
       </form>
     </div>
-    
+
   </mat-toolbar>
 
   <mat-table #table [dataSource]="allUsers" matSort>
@@ -71,12 +71,16 @@
       <mat-header-cell *matHeaderCellDef i18n>Action</mat-header-cell>
       <mat-cell  *matCellDef="let element">
         <div *ngIf="!element.admin">
-          <button mat-icon-button *ngIf="element.roles.length === 0" (click)="addRole(element)" mat-raised-button>
-          <mat-icon>lock</mat-icon></button>
-          <button mat-icon-button *ngIf="element.roles.length > 0" (click)="removeRole(element)" mat-raised-button>
-          <mat-icon >lock_open</mat-icon></button>
-          <a routerLink="/users/profile/{{element.name}}" mat-raised-button i18n>View Profile
-            <mat-icon>folder_open</mat-icon></a>
+          <button mat-icon-button *ngIf="element.roles.length === 0" (click)="addRole(element)">
+            <mat-icon>lock</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="element.roles.length > 0" (click)="removeRole(element)">
+            <mat-icon >lock_open</mat-icon>
+          </button>
+          <a routerLink="/users/profile/{{element.name}}" mat-button i18n>
+            View Profile
+            <mat-icon>folder_open</mat-icon>
+          </a>
         </div>
       </mat-cell>
     </ng-container>

@@ -121,13 +121,12 @@ export class UsersComponent implements OnInit, AfterViewInit {
       this.allUsers.data = [].concat(
         data[0].rows.reduce((users: any[], user: any) => {
           if (user.id !== '_design/_auth') {
-            let filename: string = '';
-            let imageSrc: string = '';
             if (user.doc._attachments) {
-              filename = Object.keys(user.doc._attachments)[0];
-              imageSrc = this.urlPrefix + 'org.couchdb.user:' + user.doc.name + '/' + filename;
+              user.doc.imageSrc =
+                this.urlPrefix + 'org.couchdb.user:' + user.doc.name + '/'
+                + Object.keys(user.doc._attachments)[0];
             }
-            users.push({ ...user.doc, admin: false, imageSrc: imageSrc });
+            users.push({ ...user.doc, admin: false });
           }
           return users;
         }, []),
